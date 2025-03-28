@@ -1,0 +1,28 @@
+server.port: 8088
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/reading
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: task-service, common-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      acks: all
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      jedis:
+        pool:
+          enabled: true
+          max-active: 8
+          max-idle: 8
+          max-wait: -1ms
