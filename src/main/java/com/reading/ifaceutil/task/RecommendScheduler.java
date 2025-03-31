@@ -27,7 +27,7 @@ public class RecommendScheduler {
         if (similarStart >= frequentUserIds.size()) {
             similarStart = 0;
         }
-        int maxArticles = 30;
+        int maxArticles = 20;
         Map<Long, List<Long>> recommendations = recommendationService.getRecommendedArticles(frequentUserIds, similarStart, similarUserNums, maxArticles);
         recommendationCache.updateCache(recommendations);
         log.info("推荐数据已更新: {}", recommendations);
