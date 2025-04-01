@@ -27,7 +27,7 @@ public class RecommendationService {
         return List.of(1L, 2L, 3L, 4L, 5L);
     }
 
-    public Map<Long, List<Long>> getRecommendedArticles(List<Long> frequentUserIds, int similarStart, int k, int maxArticles) {
+    public Map<Long, List<Long>> getRecommendedArticles(List<Long> frequentUserIds, long similarStart, long k, int maxArticles) {
         Map<Long, Map<Long, Double>> userArticleMatrix = buildUserArticleMatrix(frequentUserIds);
         Map<Long, Double> articleHotnessMap = getArticleHotnessMap(); // 获取文章热度榜
         Map<Long, List<Long>> allUsersRecommendedArticles = new HashMap<>();
@@ -107,7 +107,7 @@ public class RecommendationService {
 
         return dotProduct / (Math.sqrt(magnitudeA) * Math.sqrt(magnitudeB));
     }
-    private List<Map.Entry<Long, Double>> findSimilarUsers(Long targetUserId, Map<Long, Map<Long, Double>> userArticleMatrix, int similarStart, int k) {
+    private List<Map.Entry<Long, Double>> findSimilarUsers(Long targetUserId, Map<Long, Map<Long, Double>> userArticleMatrix, long similarStart, long k) {
         Map<Long, Double> targetUserMatrix = userArticleMatrix.get(targetUserId);
         List<Map.Entry<Long, Double>> similarityList = new ArrayList<>();
 
