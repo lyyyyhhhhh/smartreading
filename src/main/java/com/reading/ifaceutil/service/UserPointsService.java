@@ -46,7 +46,7 @@ public class UserPointsService {
     public boolean changePoints(Long userId, int points) {
         // 根据用户 ID 查询用户的积分信息
         Optional<UserPoints> userPointsOptional = userPointsRepository.findByUserId(userId);
-        UserPoints userPoints = userPointsOptional.get();
+        UserPoints userPoints = userPointsOptional.orElse(new UserPoints(userId, 0, 0, LocalDateTime.now()));
         // 扣除相应智阅币
         userPoints.setTotalPoints(userPoints.getTotalPoints() + points);
         log.info("积分详细{}， {}", userPoints.getTotalPoints(), points);

@@ -32,6 +32,8 @@ public class UserTasksController {
     @Autowired
     private UserPointsService userPointsService;
     @Autowired
+    private TaskRuleService taskRulesService;
+    @Autowired
     private KafkaProducer kafkaProducer;
 
     @GetMapping("/rules")
@@ -42,6 +44,20 @@ public class UserTasksController {
     @GetMapping("/rule")
     public TaskRules getTaskRuleByType(@RequestParam String taskType) {
         return taskRuleService.findByTaskType(taskType);
+    }
+
+    @PostMapping("/init")
+    public void initUserTask(@RequestParam Long userId) {
+        // temp fix逻辑
+        List<TaskRules> allRules = taskRulesService.getTaskRules();
+        LocalDate currentDate = LocalDate.now();
+        for (TaskRules rule : allRules) {
+            List<UserTaskProgress> userTaskProgress = userTaskProgressService.getSpecifiedTasks(userId, currentDate, rule.getTaskType());
+            if (!userTaskProgress.isEmpty()) {
+                continue;
+            }
+            userTaskProgressService.createNewTask(userId, rule.getTaskType());
+        }
     }
 
     @GetMapping("/status/{userId}")

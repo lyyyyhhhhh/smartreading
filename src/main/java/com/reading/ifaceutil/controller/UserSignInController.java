@@ -23,25 +23,10 @@ import java.util.Map;
 public class UserSignInController {
     @Autowired
     private UserSignInService userSignInService;
-    // temp
-    @Autowired
-    private UserTaskProgressService userTaskProgressService;
-    @Autowired
-    private TaskRuleService taskRulesService;
 
     @PostMapping
     public String signIn(@RequestBody Map<String, Long> requestBody) throws JsonProcessingException {
         Long userId = requestBody.get("userId");
-        // temp fix逻辑
-        List<TaskRules> allRules = taskRulesService.getTaskRules();
-        LocalDate currentDate = LocalDate.now();
-        for (TaskRules rule : allRules) {
-            List<UserTaskProgress> userTaskProgress = userTaskProgressService.getSpecifiedTasks(userId, currentDate, rule.getTaskType());
-            if (!userTaskProgress.isEmpty()) {
-                continue;
-            }
-            userTaskProgressService.createNewTask(userId, rule.getTaskType());
-        }
         return userSignInService.signIn(userId);
     }
 }
